@@ -1,32 +1,25 @@
-const { getAllFilePathsWithExtension, readFile } = require('./fileSystem');
-const { readLine } = require('./console');
+const { readLine } = require('./console')
+const show = require('./show')
 
-app();
-
-function app () {
-    const files = getFiles();
-
-    console.log('Please, write your command!');
-    readLine(processCommand);
+function processCommand(command) {
+  switch (command) {
+    case 'exit':
+      process.exit(0)
+      break
+    case 'show':
+      show()
+      break
+    default:
+      console.log('wrong command')
+      break
+  }
 }
 
-function getFiles () {
-    const filePaths = getAllFilePathsWithExtension(process.cwd(), 'js');
-    return filePaths.map(path => readFile(path));
+function app() {
+  console.log('Please, write your command!')
+  readLine(processCommand)
 }
 
-function processCommand (command) {
-    switch (command) {
-        case 'exit':
-            process.exit(0);
-            break;
-        case 'show':
-            show()
-            break
-        default:
-            console.log('wrong command');
-            break;
-    }
-}
+app()
 
 // TODO you can do it!
