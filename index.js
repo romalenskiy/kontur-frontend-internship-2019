@@ -1,21 +1,33 @@
 const { readLine } = require('./console')
 const show = require('./show')
 const important = require('./important')
+const user = require('./user')
 
 function processCommand(command) {
-  switch (command) {
-    case 'exit':
+  const userCommandRegEx = /user [^\s]/
+
+  switch (true) {
+    case command === 'exit': {
       process.exit(0)
       break
-    case 'show':
+    }
+    case command === 'show': {
       show()
       break
-    case 'important':
+    }
+    case command === 'important': {
       important()
       break
-    default:
+    }
+    case userCommandRegEx.test(command): {
+      const userName = command.slice(command.indexOf(' ') + 1).trim()
+      user(userName)
+      break
+    }
+    default: {
       console.log('wrong command')
       break
+    }
   }
 }
 
