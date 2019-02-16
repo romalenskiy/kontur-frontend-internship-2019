@@ -1,7 +1,7 @@
-const { collectTodos, parseTodos, formatTodos, printFormattedTodos } = require('./handleTodos')
+const { getTodos, formatTodos, printFormattedTodos } = require('./handleTodos')
 
 function show() {
-  const todos = formatTodos(parseTodos(collectTodos()))
+  const todos = formatTodos(getTodos())
   printFormattedTodos(todos)
 }
 

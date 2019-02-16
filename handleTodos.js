@@ -76,6 +76,10 @@ function parseTodos(todos) {
   })
 }
 
+function getTodos() {
+  return parseTodos(collectTodos())
+}
+
 function findColumnsWidth(todos) {
   let userWidth = 4
   let dateWidth = 4
@@ -155,6 +159,7 @@ function printFormattedTodos(todos) {
 module.exports = {
   collectTodos,
   parseTodos,
+  getTodos,
   formatTodos,
   printFormattedTodos,
 }
