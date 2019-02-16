@@ -1,5 +1,6 @@
 const { readLine } = require('./console')
 const show = require('./show')
+const important = require('./important')
 
 function processCommand(command) {
   switch (command) {
@@ -8,6 +9,9 @@ function processCommand(command) {
       break
     case 'show':
       show()
+      break
+    case 'important':
+      important()
       break
     default:
       console.log('wrong command')

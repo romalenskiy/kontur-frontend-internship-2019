@@ -148,8 +148,13 @@ function formatTodos(todos) {
   return todoRows
 }
 
+function printFormattedTodos(todos) {
+  console.log(todos.join('\n'))
+}
+
 module.exports = {
   collectTodos,
   parseTodos,
   formatTodos,
+  printFormattedTodos,
 }
