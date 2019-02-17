@@ -5,8 +5,8 @@ function filterTodos(todos) {
 }
 
 function important() {
-  const importantTodos = formatTodos(filterTodos(getTodos()))
-  printFormattedTodos(importantTodos)
+  const todos = formatTodos(filterTodos(getTodos()))
+  printFormattedTodos(todos)
 }
 
 module.exports = important

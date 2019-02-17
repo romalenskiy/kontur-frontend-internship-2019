@@ -2,9 +2,11 @@ const { readLine } = require('./console')
 const show = require('./show')
 const important = require('./important')
 const user = require('./user')
+const sort = require('./sort')
 
 function processCommand(command) {
   const userCommandRegEx = /user [^\s]/
+  const sortCommandRegEx = /^sort (importance|user|date)$/
 
   switch (true) {
     case command === 'exit': {
@@ -22,6 +24,11 @@ function processCommand(command) {
     case userCommandRegEx.test(command): {
       const userName = command.slice(command.indexOf(' ') + 1).trim()
       user(userName)
+      break
+    }
+    case sortCommandRegEx.test(command): {
+      const columnName = command.slice(command.indexOf(' ') + 1)
+      sort(columnName)
       break
     }
     default: {
