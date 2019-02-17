@@ -31,48 +31,27 @@ function collectTodos() {
   return todos
 }
 
-function defineTodoImportance(comment) {
-  let importance = 0
-  let message = comment
-
-  while (message.includes('!')) {
-    importance += 1
-    message = message.slice(message.indexOf('!') + 1)
-  }
-
-  return importance
-}
-
 function parseTodos(todos) {
   return todos.map((todo) => {
     let { comment } = todo
     const { fileName } = todo
-    let user = ''
-    let date = ''
+    const qtyOfSemicolons = (comment.match(/;/g) || []).length
 
-    if (comment.includes(';')) {
-      const messageAsArray = []
+    const userAndDate = { user: '', date: '' }
+    const importance = (comment.match(/!/g) || []).length
 
-      while (comment.includes(';')) {
-        if (comment[0] === ';') {
-          messageAsArray.push('')
-        } else {
-          const indexOfSeparator = comment.indexOf(';')
-          messageAsArray.push(comment.slice(0, indexOfSeparator))
-        }
-
-        comment = comment.slice(comment.indexOf(';') + 1).trim()
-      }
-
-      const importance = defineTodoImportance(comment)
-      user = messageAsArray[0] // eslint-disable-line prefer-destructuring
-      date = messageAsArray[1] // eslint-disable-line prefer-destructuring
-
-      return { importance, user, date, comment, fileName }
+    if (qtyOfSemicolons >= 0 && qtyOfSemicolons <= 1) {
+      return { importance, ...userAndDate, comment, fileName }
     }
-    const importance = defineTodoImportance(comment)
 
-    return { importance, user, date, comment, fileName }
+    Object.keys(userAndDate).forEach((key) => {
+      const indexOfSemicolon = comment.indexOf(';')
+
+      userAndDate[key] = comment.slice(0, indexOfSemicolon)
+      comment = comment.slice(indexOfSemicolon + 1).trim()
+    })
+
+    return { importance, ...userAndDate, comment, fileName }
   })
 }
 
