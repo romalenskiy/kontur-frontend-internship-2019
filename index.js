@@ -6,7 +6,7 @@ const sort = require('./sort')
 const date = require('./date')
 
 function processCommand(command) {
-  const userCommandRegEx = /user [^\s]/
+  const userCommandRegEx = /^user [^\s]/
   const sortCommandRegEx = /^sort (importance|user|date)$/
   const dateCommandRegEx = /^date [^\s]/
 
