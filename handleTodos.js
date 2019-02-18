@@ -13,7 +13,7 @@ function collectTodos() {
 
     // For clarity understanding:
     // todо string is smthing like that - "// TODО: foo; bar; baz"
-    // todо body then is like that - "foo; bar; baz"
+    // then todо body is - "foo; bar; baz"
     while (indexOfTodoStart !== -1) {
       indexOfTodoEnd = fileString.indexOf('\n', indexOfTodoStart)
       if (indexOfTodoEnd === -1) indexOfTodoEnd = fileString.length // In case, if TODO ends at the end of the file without new line
