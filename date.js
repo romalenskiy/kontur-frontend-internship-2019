@@ -1,15 +1,15 @@
 const { getTodos, formatTodos, printFormattedTodos } = require('./handleTodos')
 
-function filterTodos(todos, dateInMS) {
+function filterTodos(todos, inputParsedDate) {
   return todos.filter((todo) => {
-    const todoDateInMS = Date.parse(todo.date)
+    const todoParsedDate = Date.parse(todo.date)
 
-    return Number.isNaN(todoDateInMS) ? false : todoDateInMS >= dateInMS
+    return Number.isNaN(todoParsedDate) ? false : todoParsedDate >= inputParsedDate
   })
 }
 
-function date(dateInMS) {
-  const todos = formatTodos(filterTodos(getTodos(), dateInMS))
+function date(inputParsedDate) {
+  const todos = formatTodos(filterTodos(getTodos(), inputParsedDate))
   printFormattedTodos(todos)
 }
 

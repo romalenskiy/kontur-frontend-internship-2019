@@ -35,12 +35,12 @@ function processCommand(command) {
     }
     case dateCommandRegEx.test(command): {
       const dateString = command.slice(command.indexOf(' ') + 1)
-      const dateInMS = Date.parse(dateString)
+      const inputParsedDate = Date.parse(dateString)
 
-      if (Number.isNaN(dateInMS)) {
+      if (Number.isNaN(inputParsedDate)) {
         console.log('invalid date')
       } else {
-        date(dateInMS)
+        date(inputParsedDate)
       }
       break
     }

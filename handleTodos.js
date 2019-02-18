@@ -35,6 +35,13 @@ function collectTodos() {
   return todos
 }
 
+function parseDate(date) {
+  if (date === '') return date
+
+  const parsedDate = Date.parse(date)
+  return Number.isNaN(parsedDate) ? 'Invalid' : date
+}
+
 function parseTodos(todos) {
   return todos.map((todo) => {
     let comment = todo.todoBody
@@ -54,6 +61,8 @@ function parseTodos(todos) {
       userAndDate[key] = comment.slice(0, indexOfSemicolon)
       comment = comment.slice(indexOfSemicolon + 1).trim()
     })
+
+    userAndDate.date = parseDate(userAndDate.date)
 
     return { importance, ...userAndDate, comment, fileName }
   })

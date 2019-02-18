@@ -29,24 +29,27 @@ function sortByUser(todos) {
 
 function sortByDate(todos) {
   const undatedTodos = []
-  const datedTodos = []
+  const validDatedTodos = []
+  const invalidDatedTodos = []
 
   todos.forEach((todo) => {
     if (todo.date === '') {
       undatedTodos.push(todo)
+    } else if (todo.date === 'Invalid') {
+      invalidDatedTodos.push(todo)
     } else {
-      datedTodos.push(todo)
+      validDatedTodos.push(todo)
     }
   })
 
-  const sortedDatedTodos = datedTodos.sort((firstTodo, secondTodo) => {
+  const sortedValidDatedTodos = validDatedTodos.sort((firstTodo, secondTodo) => {
     const firstTodoDate = Date.parse(firstTodo.date)
     const secondTodoDate = Date.parse(secondTodo.date)
 
     return secondTodoDate - firstTodoDate
   })
 
-  return [...sortedDatedTodos, ...undatedTodos]
+  return [...sortedValidDatedTodos, ...invalidDatedTodos, ...undatedTodos]
 }
 
 const sortBy = {
