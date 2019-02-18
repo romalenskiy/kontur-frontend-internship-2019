@@ -12,8 +12,8 @@ function collectTodos() {
     let indexOfTodoEnd
 
     // For clarity understanding:
-    // todo string is smthing like that - "// TODO: foo; bar; baz"
-    // todo body then is like that - "foo; bar; baz"
+    // todо string is smthing like that - "// TODО: foo; bar; baz"
+    // todо body then is like that - "foo; bar; baz"
     while (indexOfTodoStart !== -1) {
       indexOfTodoEnd = fileString.indexOf('\n', indexOfTodoStart)
       if (indexOfTodoEnd === -1) indexOfTodoEnd = fileString.length // In case, if TODO ends at the end of the file without new line
@@ -63,7 +63,15 @@ function getTodos() {
   return parseTodos(collectTodos())
 }
 
+function findMaxWidth(currentWidth, testingWidth, maximum) {
+  if (testingWidth > currentWidth) {
+    return testingWidth > maximum ? maximum : testingWidth
+  }
+  return currentWidth
+}
+
 function findColumnsWidth(todos) {
+  // Minimum possible values as default
   let userWidth = 4
   let dateWidth = 4
   let commentWidth = 7
@@ -72,33 +80,10 @@ function findColumnsWidth(todos) {
   todos.forEach((todo) => {
     const { user, date, comment, fileName } = todo
 
-    if (user.length > userWidth) {
-      userWidth = user.length
-      if (userWidth > 10) {
-        userWidth = 10
-      }
-    }
-
-    if (date.length > dateWidth) {
-      dateWidth = date.length
-      if (dateWidth > 10) {
-        dateWidth = 10
-      }
-    }
-
-    if (comment.length > commentWidth) {
-      commentWidth = comment.length
-      if (commentWidth > 50) {
-        commentWidth = 50
-      }
-    }
-
-    if (fileName.length > fileNameWidth) {
-      fileNameWidth = fileName.length
-      if (fileNameWidth > 15) {
-        fileNameWidth = 15
-      }
-    }
+    userWidth = findMaxWidth(userWidth, user.length, 10)
+    dateWidth = findMaxWidth(dateWidth, date.length, 10)
+    commentWidth = findMaxWidth(commentWidth, comment.length, 50)
+    fileNameWidth = findMaxWidth(fileNameWidth, fileName.length, 15)
   })
 
   return { userWidth, dateWidth, commentWidth, fileNameWidth }
