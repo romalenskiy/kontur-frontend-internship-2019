@@ -5,26 +5,30 @@ function collectTodos() {
   const todos = []
 
   files.forEach((file) => {
+    const todoStartRegEx = /\/\/[ \t]*todo/i
     let { fileString } = file
     const { fileName } = file
-    let indexOfTodoStart = fileString.search(/\/\/ todo/i)
+    let indexOfTodoStart = fileString.search(todoStartRegEx)
     let indexOfTodoEnd
-    let todo
-    let indexOfCommentStart
-    let comment
 
+    // For clarity understanding:
+    // todo string is smthing like that - "// TODO: foo; bar; baz"
+    // todo body then is like that - "foo; bar; baz"
     while (indexOfTodoStart !== -1) {
       indexOfTodoEnd = fileString.indexOf('\n', indexOfTodoStart)
-      if (indexOfTodoEnd === -1) indexOfTodoEnd = fileString.length
+      if (indexOfTodoEnd === -1) indexOfTodoEnd = fileString.length // In case, if TODO ends at the end of the file without new line
+      let todoString = fileString.slice(indexOfTodoStart, indexOfTodoEnd) // Isolating one TODO from general file string: e.g.: "// TODO : sample text" -->
 
-      todo = fileString.slice(indexOfTodoStart + 7, indexOfTodoEnd).trim()
-      indexOfCommentStart = todo.search(/[^ :]/)
-      comment = todo.slice(indexOfCommentStart, indexOfTodoEnd)
+      const indexOfTodoHeaderEnd = todoString.search(/todo/i) + 4 // -->  7  -->
+      todoString = todoString.slice(indexOfTodoHeaderEnd) // -->  " : sample text"  -->
 
-      todos.push({ comment, fileName })
+      const indexOfTodoBodyStart = todoString.search(/[^ :]/) // -->  3  -->
+      const todoBody = todoString.slice(indexOfTodoBodyStart) // --> as a result, there is a clean TODO body: "sample text"
 
-      fileString = fileString.slice(indexOfTodoEnd)
-      indexOfTodoStart = fileString.search(/\/\/ todo/i)
+      todos.push({ todoBody, fileName }) // Saving todo with the file name
+
+      fileString = fileString.slice(indexOfTodoEnd) // Slicing whole file string for further search
+      indexOfTodoStart = fileString.search(todoStartRegEx) // Finding next todo string for next iteration of search
     }
   })
 
@@ -33,7 +37,7 @@ function collectTodos() {
 
 function parseTodos(todos) {
   return todos.map((todo) => {
-    let { comment } = todo
+    let comment = todo.todoBody
     const { fileName } = todo
     const qtyOfSemicolons = (comment.match(/;/g) || []).length
 
