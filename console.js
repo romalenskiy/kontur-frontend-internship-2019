@@ -13,6 +13,11 @@ function readLine(callback) {
 
 // TODO digi; 2016-04-08; добавить writeLine!!!
 
+function getArgumentFromConsoleInput(input, command) {
+  return input.slice(command.length).trim()
+}
+
 module.exports = {
   readLine,
+  getArgumentFromConsoleInput,
 }

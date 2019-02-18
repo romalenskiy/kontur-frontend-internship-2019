@@ -1,4 +1,4 @@
-const { readLine } = require('./console')
+const { readLine, getArgumentFromConsoleInput } = require('./console')
 const show = require('./show')
 const important = require('./important')
 const user = require('./user')
@@ -6,39 +6,48 @@ const sort = require('./sort')
 const date = require('./date')
 
 function processCommand(command) {
-  const userCommandRegEx = /^user [^\s]/
-  const sortCommandRegEx = /^sort (importance|user|date)$/
-  const dateCommandRegEx = /^date [^\s]/
+  const input = command.trim()
+
+  const userCommandRegEx = /^user[ \t]+[^\s]/
+  const sortCommandRegEx = /^sort[ \t]+[^\s]/
+  const sortArgumentRegEx = /^(importance|user|date)$/
+  const dateCommandRegEx = /^date[ \t]+[^\s]/
 
   switch (true) {
-    case command === 'exit': {
+    case input === 'exit': {
       process.exit(0)
       break
     }
-    case command === 'show': {
+    case input === 'show': {
       show()
       break
     }
-    case command === 'important': {
+    case input === 'important': {
       important()
       break
     }
-    case userCommandRegEx.test(command): {
-      const userName = command.slice(command.indexOf(' ') + 1).trim()
+    case userCommandRegEx.test(input): {
+      const userName = getArgumentFromConsoleInput(input, 'user')
+
       user(userName)
       break
     }
-    case sortCommandRegEx.test(command): {
-      const columnName = command.slice(command.indexOf(' ') + 1)
-      sort(columnName)
+    case sortCommandRegEx.test(input): {
+      const columnName = getArgumentFromConsoleInput(input, 'sort')
+
+      if (sortArgumentRegEx.test(columnName)) {
+        sort(columnName)
+      } else {
+        console.log('invalid argument')
+      }
       break
     }
-    case dateCommandRegEx.test(command): {
-      const dateString = command.slice(command.indexOf(' ') + 1)
+    case dateCommandRegEx.test(input): {
+      const dateString = getArgumentFromConsoleInput(input, 'sort')
       const inputParsedDate = Date.parse(dateString)
 
       if (Number.isNaN(inputParsedDate)) {
-        console.log('invalid date')
+        console.log('invalid argument')
       } else {
         date(inputParsedDate)
       }
