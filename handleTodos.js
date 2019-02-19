@@ -12,7 +12,7 @@ function collectTodos() {
     let indexOfTodoEnd
 
     // For clarity understanding:
-    // todо string is smthing like that - "// TODО: foo; bar; baz"
+    // todо string is smthing like that - " : foo; bar; baz"
     // then todо body is - "foo; bar; baz"
     while (indexOfTodoStart !== -1) {
       indexOfTodoEnd = fileString.indexOf('\n', indexOfTodoStart)
@@ -22,8 +22,8 @@ function collectTodos() {
       const indexOfTodoHeaderEnd = todoString.search(/todo/i) + 4 // -->  7  -->
       todoString = todoString.slice(indexOfTodoHeaderEnd) // -->  " : sample text"  -->
 
-      const indexOfTodoBodyStart = todoString.search(/[^ :]/) // -->  3  -->
-      const todoBody = todoString.slice(indexOfTodoBodyStart) // --> as a result, there is a clean TODO body: "sample text"
+      const indexOfTodoBodyStart = todoString.search(/[^\s:]/) // -->  3  -->
+      const todoBody = indexOfTodoBodyStart === -1 ? '' : todoString.slice(indexOfTodoBodyStart).trim() // --> as a result, there is a clean TODO body: "sample text"
 
       todos.push({ todoBody, fileName }) // Saving todo with the file name
 
@@ -51,9 +51,9 @@ function parseTodos(todos) {
     const userAndDate = { user: '', date: '' }
     const importance = (comment.match(/!/g) || []).length
 
-    if (qtyOfSemicolons >= 0 && qtyOfSemicolons <= 1) {
-      return { importance, ...userAndDate, comment, fileName }
-    }
+    if (qtyOfSemicolons === 0 && comment === '') return undefined // for "// todо"
+
+    if (qtyOfSemicolons === 0 || qtyOfSemicolons === 1) return { importance, ...userAndDate, comment, fileName } // for "// todо foobar" or "// todо foo;bar" or "// todо ;"
 
     Object.keys(userAndDate).forEach((key) => {
       const indexOfSemicolon = comment.indexOf(';')
@@ -62,10 +62,12 @@ function parseTodos(todos) {
       comment = comment.slice(indexOfSemicolon + 1).trim()
     })
 
+    if (userAndDate.user === '' && userAndDate.date === '' && comment === '') return undefined // for "// todо ; ;"
+
     userAndDate.date = parseDate(userAndDate.date)
 
     return { importance, ...userAndDate, comment, fileName }
-  })
+  }).filter(Boolean) // filtering out undefined values
 }
 
 function getTodos() {
