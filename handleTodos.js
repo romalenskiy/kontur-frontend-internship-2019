@@ -38,8 +38,10 @@ function collectTodos() {
 function parseDate(date) {
   if (date === '') return date
 
-  const parsedDate = Date.parse(date)
-  return Number.isNaN(parsedDate) ? 'Invalid' : date
+  const dateRegEx = /^(\d{4}|\d{4}-(0[1-9]|1[0-2])|\d{4}-(((0[13578]|1[02])-(0[1-9]|[12]\d|3[0-1]))|(02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))))$/
+  if (!(dateRegEx.test(date))) return 'Invalid'
+
+  return date
 }
 
 function parseTodos(todos) {

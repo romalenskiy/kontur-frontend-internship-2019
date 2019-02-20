@@ -9,9 +9,12 @@ function processCommand(command) {
   const input = command.trim()
 
   const userCommandRegEx = /^user[ \t]+[^\s]/
+
   const sortCommandRegEx = /^sort[ \t]+[^\s]/
   const sortArgumentRegEx = /^(importance|user|date)$/
+
   const dateCommandRegEx = /^date[ \t]+[^\s]/
+  const dateArgumentRegEx = /^(\d{4}|\d{4}-(0[1-9]|1[0-2])|\d{4}-(((0[13578]|1[02])-(0[1-9]|[12]\d|3[0-1]))|(02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))))$/
 
   switch (true) {
     case input === 'exit': {
@@ -44,13 +47,13 @@ function processCommand(command) {
     }
     case dateCommandRegEx.test(input): {
       const dateString = getArgumentFromConsoleInput(input, 'sort')
-      const inputParsedDate = Date.parse(dateString)
 
-      if (Number.isNaN(inputParsedDate)) {
-        console.log('invalid argument\nUsage: date {yyyy[-mm-dd]}')
-      } else {
-        date(inputParsedDate)
+      if (!(dateArgumentRegEx.test(dateString))) {
+        console.log('invalid date or its format\nExpected: yyyy[-mm-dd]') // e.g.: '2019-03-32' or '2019-30-03' or '2019/03/30'
+        return
       }
+
+      date(dateString)
       break
     }
     default: {
