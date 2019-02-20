@@ -58,7 +58,7 @@ function parseTodos(todos) {
     Object.keys(userAndDate).forEach((key) => {
       const indexOfSemicolon = comment.indexOf(';')
 
-      userAndDate[key] = comment.slice(0, indexOfSemicolon)
+      userAndDate[key] = comment.slice(0, indexOfSemicolon).trim()
       comment = comment.slice(indexOfSemicolon + 1).trim()
     })
 
