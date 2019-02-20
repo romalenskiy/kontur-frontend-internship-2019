@@ -1,7 +1,20 @@
 const { getTodos, formatTodos, printFormattedTodos } = require('./handleTodos')
 
 function sortByImportance(todos) {
-  return todos.sort((firstTodo, secondTodo) => secondTodo.importance - firstTodo.importance)
+  const importantTodos = []
+  const unimportantTodos = []
+
+  todos.forEach((todo) => {
+    if (todo.importance === 0) {
+      unimportantTodos.push(todo)
+    } else {
+      importantTodos.push(todo)
+    }
+  })
+
+  const sortedImportantTodos = importantTodos.sort((firstTodo, secondTodo) => secondTodo.importance - firstTodo.importance)
+
+  return [...sortedImportantTodos, ...unimportantTodos]
 }
 
 function sortByUser(todos) {
