@@ -38,7 +38,7 @@ function processCommand(command) {
       if (sortArgumentRegEx.test(columnName)) {
         sort(columnName)
       } else {
-        console.log('invalid argument')
+        console.log('invalid argument\nUsage: sort {importance | user | date}')
       }
       break
     }
@@ -47,7 +47,7 @@ function processCommand(command) {
       const inputParsedDate = Date.parse(dateString)
 
       if (Number.isNaN(inputParsedDate)) {
-        console.log('invalid argument')
+        console.log('invalid argument\nUsage: date {yyyy[-mm-dd]}')
       } else {
         date(inputParsedDate)
       }
