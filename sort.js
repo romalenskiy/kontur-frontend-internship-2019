@@ -12,9 +12,9 @@ function sortByImportance(todos) {
     }
   })
 
-  const sortedImportantTodos = importantTodos.sort((firstTodo, secondTodo) => secondTodo.importance - firstTodo.importance)
+  importantTodos.sort((firstTodo, secondTodo) => secondTodo.importance - firstTodo.importance)
 
-  return [...sortedImportantTodos, ...unimportantTodos]
+  return [...importantTodos, ...unimportantTodos]
 }
 
 function sortByUser(todos) {
@@ -29,7 +29,7 @@ function sortByUser(todos) {
     }
   })
 
-  const sortedNamedTodos = namedTodos.sort((firstTodo, secondTodo) => {
+  namedTodos.sort((firstTodo, secondTodo) => {
     const firstTodoUser = firstTodo.user.toUpperCase()
     const secondTodoUser = secondTodo.user.toUpperCase()
 
@@ -37,7 +37,7 @@ function sortByUser(todos) {
     return firstTodoUser < secondTodoUser ? -1 : 1
   })
 
-  return [...sortedNamedTodos, ...unnamedTodos]
+  return [...namedTodos, ...unnamedTodos]
 }
 
 function sortByDate(todos) {
@@ -55,14 +55,14 @@ function sortByDate(todos) {
     }
   })
 
-  const sortedValidDatedTodos = validDatedTodos.sort((firstTodo, secondTodo) => {
+  validDatedTodos.sort((firstTodo, secondTodo) => {
     const firstTodoDate = Date.parse(firstTodo.date)
     const secondTodoDate = Date.parse(secondTodo.date)
 
     return secondTodoDate - firstTodoDate
   })
 
-  return [...sortedValidDatedTodos, ...invalidDatedTodos, ...undatedTodos]
+  return [...validDatedTodos, ...invalidDatedTodos, ...undatedTodos]
 }
 
 const sortBy = {
