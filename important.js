@@ -1,10 +1,10 @@
 const { getTodos, formatTodos, printFormattedTodos } = require('./handleTodos')
 
-function filterTodos(todos) {
-  return todos.filter(todo => todo.importance > 0)
-}
-
 function important() {
+  function filterTodos(todos) {
+    return todos.filter(todo => todo.importance > 0)
+  }
+
   const todos = formatTodos(filterTodos(getTodos()))
   printFormattedTodos(todos)
 }
