@@ -38,12 +38,9 @@ function getTodos() {
 
   function parseTodos(todos) {
     function parseDate(date) {
-      if (date === '') return date
-
       const dateRegEx = /^(\d{4}|\d{4}-(0[1-9]|1[0-2])|\d{4}-(((0[13578]|1[02])-(0[1-9]|[12]\d|3[0-1]))|(02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))))$/
-      if (!(dateRegEx.test(date))) return 'Invalid'
 
-      return date
+      return (date === '' || dateRegEx.test(date)) ? date : 'Invalid'
     }
 
     return todos.map((todo) => {
