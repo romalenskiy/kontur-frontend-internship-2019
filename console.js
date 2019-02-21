@@ -17,7 +17,27 @@ function getArgumentFromConsoleInput(input, command) {
   return input.slice(command.length).trim()
 }
 
+function HandleConsoleInput(
+  input,
+  commandName,
+  callback,
+  argumentName = '',
+  fallback = () => { console.log(`expected argument ${argumentName === '' ? '' : `{${argumentName}}`}`) },
+  defaultFallback = () => { console.log('wrong command') },
+) {
+  const CommandWithArgumentRegEx = new RegExp(`^${commandName}[ \\t]+[^\\s]`)
+  const CommandWithoutArgumentRegEx = new RegExp(`^${commandName}$`)
+
+  if (CommandWithArgumentRegEx.test(input)) {
+    callback(getArgumentFromConsoleInput(input, commandName))
+  } else if (CommandWithoutArgumentRegEx.test(input)) {
+    fallback()
+  } else {
+    defaultFallback()
+  }
+}
+
 module.exports = {
   readLine,
-  getArgumentFromConsoleInput,
+  HandleConsoleInput,
 }

@@ -1,4 +1,4 @@
-const { readLine, getArgumentFromConsoleInput } = require('./console')
+const { readLine, HandleConsoleInput } = require('./console')
 const show = require('./show')
 const important = require('./important')
 const user = require('./user')
@@ -8,12 +8,12 @@ const date = require('./date')
 function processCommand(command) {
   const input = command.trim()
 
-  const userCommandRegEx = /^user[ \t]+[^\s]/
+  const userCommandRegEx = /^user/
 
-  const sortCommandRegEx = /^sort[ \t]+[^\s]/
+  const sortCommandRegEx = /^sort/
   const sortArgumentRegEx = /^(importance|user|date)$/
 
-  const dateCommandRegEx = /^date[ \t]+[^\s]/
+  const dateCommandRegEx = /^date/
   const dateArgumentRegEx = /^(\d{4}|\d{4}-(0[1-9]|1[0-2])|\d{4}-(((0[13578]|1[02])-(0[1-9]|[12]\d|3[0-1]))|(02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))))$/
 
   switch (true) {
@@ -30,30 +30,42 @@ function processCommand(command) {
       break
     }
     case userCommandRegEx.test(input): {
-      const userName = getArgumentFromConsoleInput(input, 'user')
-
-      user(userName)
+      HandleConsoleInput(
+        input,
+        'user',
+        (userName) => { user(userName) },
+        'username',
+      )
       break
     }
     case sortCommandRegEx.test(input): {
-      const columnName = getArgumentFromConsoleInput(input, 'sort')
-
-      if (sortArgumentRegEx.test(columnName)) {
-        sort(columnName)
-      } else {
-        console.log('invalid argument\nUsage: sort {importance | user | date}')
-      }
+      HandleConsoleInput(
+        input,
+        'sort',
+        (columnName) => {
+          if (sortArgumentRegEx.test(columnName)) {
+            sort(columnName)
+          } else {
+            console.log('invalid argument\navailable arguments: {importance | user | date}')
+          }
+        },
+        'importance | user | date',
+      )
       break
     }
     case dateCommandRegEx.test(input): {
-      const dateString = getArgumentFromConsoleInput(input, 'sort')
-
-      if (!(dateArgumentRegEx.test(dateString))) {
-        console.log('invalid date or its format\nExpected: yyyy[-mm-dd]') // e.g.: '2019-03-32' or '2019-30-03' or '2019/03/30'
-        return
-      }
-
-      date(dateString)
+      HandleConsoleInput(
+        input,
+        'date',
+        (dateString) => {
+          if (dateArgumentRegEx.test(dateString)) {
+            date(dateString)
+          } else {
+            console.log('invalid date or its format\nexpected: yyyy[-mm-dd]') // e.g.: '2019-03-32' or '2019-30-03' or '2019/03/30'
+          }
+        },
+        'yyyy[-mm-dd]',
+      )
       break
     }
     default: {
