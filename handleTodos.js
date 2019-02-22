@@ -38,9 +38,15 @@ function getTodos() {
 
   function parseTodos(todos) {
     function parseDate(date) {
+      // 1) formatting to use only '-' as separator: '2018.03.21' --> '2018-03-21' etc.
+      // 2) clearing from unintentional typos by user: '2018-02-21-' --> '2018-02-21' etc.
+      const clearDate = date.replace(/[\\\-/|,.:_=\s]+/g, '-').replace(/^-+|-+$/g, '')
+
+      // Accepting only date with such format: 'yyyy' or 'yyyy-mm' or 'yyyy-mm-dd'
       const dateRegEx = /^(\d{4}|\d{4}-(0[1-9]|1[0-2])|\d{4}-(((0[13578]|1[02])-(0[1-9]|[12]\d|3[0-1]))|(02-(0[1-9]|[12]\d))|((0[469]|11)-(0[1-9]|[12]\d|30))))$/
 
-      return (date === '' || dateRegEx.test(date)) ? date : 'Invalid'
+      return (clearDate === '' || dateRegEx.test(clearDate)) ? clearDate : 'Invalid'
+      // Otherwise marks date as 'Invalid'
     }
 
     return todos.map((todo) => {
