@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha ./tests/tests.js ./tests/show/tests.js ./tests/important/tests.js ./tests/user/tests.js ./tests/date/tests.js ./tests/sort/tests.js"
+    "test": "jest --watch"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +16,6 @@
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0"
+    "jest": "^24.5.0"
   }
 }
