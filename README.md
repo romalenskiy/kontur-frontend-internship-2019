@@ -1,4 +1,4 @@
-# Kontur 2019 frontend internship test assignment
+# Todo comments parser
 
 This is my attempt (successful) to solve the [internship](https://kontur.ru/education/programs/intern/frontend) task of company "SKB Kontur".
 
