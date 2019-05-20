@@ -38,7 +38,7 @@ The username must be case-insensitive. Example command: "user veronika"
 Clone the repo:
 
 ```bash
-git clone https://github.com/romalenskiy/kontur-frontend-internship-2019.git
+git clone https://github.com/romalenskiy/todo-comments-parser.git
 ```
 
 Install node packages:
